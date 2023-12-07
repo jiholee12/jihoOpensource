@@ -1,33 +1,35 @@
-function handleSymbol(symbol){
-    switch(symbol){
-        case 'C':
-            buffer = '0';
-            runninTotal = 0;
-            break;
+function handleMath(symbol){
+    if(buffer ==='0'){
+        return;
+    }
 
-            case '=':
-                if(previousOperator === null){
-                    return
-                }
-                flushOperation(parseInt(buffer));
-                previousOperator = null;
-                buffer = runninTotal;
-                runninTotal = 0;
-                break;
+    const intBuffer = parseInt(buffer);
 
-                case'←':
-                if(buffer.length ===1){
-                    buffer ='0';
-                }else{
-                    buffer = buffer.substring(0,buffer.length -1);
-                }
-                break; 
+    if(runninTotal === 0){
+        runninTotal = intBuffer;
+    }else{
+        flushOperation(intBuffer);
+    }
+    previousOperator = symbol;
+    buffer = '0'
+}
 
-                case '+':
-                case '-':
-                case '*':
-                case '/':
-                    handleMath(symbol);
-                    break;
+function flushOperation(intBuffer){
+    if(previousOperator === '+'){
+        runninTotal += intBuffer;
+    }else if(previousOperator === '-'){
+        runninTotal -= intBuffer;
+    }else if(previousOperator === '*'){
+        runninTotal *= intBuffer
+    }else if(previousOperator === '/'){
+        runninTotal /= intBuffer;
+    }
+}
+
+function handleNumber(numberString){
+    if(buffer === '0'){
+        buffer = numberString;
+    }else{
+        buffer += numberString;
     }
 }
